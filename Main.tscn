@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dlm4pkvn5obum"]
+
+[ext_resource type="PackedScene" uid="uid://b61sv0c27ro27" path="res://Scenes/Water_Body.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://bu1oea2snm1rr" path="res://Sprites/Background-1.png" id="2_17c6a"]
+[ext_resource type="Script" uid="uid://rxn4ol5pv5ro" path="res://Main.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://dn80vpllwlxnv" path="res://Sprites/Background-2.png" id="4_qwcrh"]
+[ext_resource type="Texture2D" uid="uid://bjmuia4pakc75" path="res://Sprites/Background-3.png" id="5_cpqlm"]
+[ext_resource type="Texture2D" uid="uid://d35xg62vmw2y" path="res://Sprites/Background-4.png" id="6_hyoq2"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("3")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(130, 42)
+texture = ExtResource("2_17c6a")
+
+[node name="Water_Body" parent="." instance=ExtResource("1")]
+z_index = 1
+position = Vector2(-9.21958, 84.238)
+k = 0.03
+d = 0.06
+distance_between_springs = 8
+spring_number = 48
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(128, 48)
+
+[node name="Sprite2" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(130, 42)
+texture = ExtResource("4_qwcrh")
+
+[node name="Sprite3" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(130, 42)
+texture = ExtResource("5_cpqlm")
+
+[node name="Sprite4" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(130, 42)
+texture = ExtResource("6_hyoq2")
