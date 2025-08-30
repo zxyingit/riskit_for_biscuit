@@ -3,7 +3,7 @@
 extends RigidBody2D
 class_name WaterSpring
 #the spring's current velocity
-var velocity: Vector2 = Vector2.ZERO
+#var velocity: Vector2 = Vector2.ZERO
 
 #the force being applied to the spring
 var force := Vector2.ZERO
@@ -41,31 +41,30 @@ func water_update(spring_constant, dampening):
 	
 	#update the height value based on our current position
 	height = position.y
-	
-	#the spring current extension
-	var height_distance = height - target_height
-	var horizon_distance = position.x - target_x_position
-	var loss = -dampening * velocity.y
-	var horizon_loss = -horizon_dampening * velocity.x
-	#hooke's law:
-	force = Vector2(-horizon_canstant*horizon_distance*5+horizon_loss,- spring_constant * height_distance + loss)
-	
-	#apply the force to the velocity
-	#equivalent to velocity = velocity + force
-	velocity += force
-	#make the spring move!
-	#TODO 
-	velocity.x = clampf(velocity.x,-5.0,5.0)
-	velocity.y = clampf(velocity.y,-10.0,10.0)
-	position += velocity
-	position.x = clampf(position.x,target_x_position-10,target_x_position+10)
-	position.y = clampf(position.y,target_height-50,target_height+50)
+	#
+	##the spring current extension
+	#var height_distance = height - target_height
+	#var horizon_distance = position.x - target_x_position
+	#var loss = -dampening * velocity.y
+	#var horizon_loss = -horizon_dampening * velocity.x
+	##hooke's law:
+	#force = Vector2(-horizon_canstant*horizon_distance*5+horizon_loss,- spring_constant * height_distance + loss)
+	#
+	##apply the force to the velocity
+	##equivalent to velocity = velocity + force
+	#velocity += force
+	##make the spring move!
+	#velocity.x = clampf(velocity.x,-5.0,5.0)
+	#velocity.y = clampf(velocity.y,-10.0,10.0)
+	#position += velocity
+	#position.x = clampf(position.x,target_x_position-10,target_x_position+10)
+	#position.y = clampf(position.y,target_height-50,target_height+50)
 	pass
 
 func initialize(x_position,id):
 	height = position.y
 	target_height = position.y
-	velocity = Vector2.ZERO
+	linear_velocity = Vector2.ZERO
 	position.x = x_position
 	target_x_position = x_position
 	index = id
@@ -84,29 +83,38 @@ func set_collision_width(value):
 	pass
 
 
-func _on_Area2D_body_entered(body):
-	#called when a body collides with a spring
-	#if the body already collided with the spring, then do not collide
-	#if body is not Stone:
+#func _on_Area2D_body_entered(body:RigidBody2D):
+	##called when a body collides with a spring
+	##if the body already collided with the spring, then do not collide
+	##if body is not Stone:
+		##return
+	#if body == collided_with:
 		#return
-	if body == collided_with:
-		return
-	
-	#the body is the last thing this spring collided with
-	collided_with = body
-	
-	#we multiply the motion of the body by the motion factor
-	#if we didn't the speed would be huge, depending on your game
-	var speed = body.velocity.y * motion_factor
-	
-	#emit the signal "splash" to call the splash function, at our water body script
-	emit_signal("splash",index,speed)
-	pass # Replace with function body.
+	#
+	##the body is the last thing this spring collided with
+	#collided_with = body
+	#
+	##we multiply the motion of the body by the motion factor
+	##if we didn't the speed would be huge, depending on your game
+	#var speed = body.linear_velocity.y * motion_factor
+	#
+	##emit the signal "splash" to call the splash function, at our water body script
+	#emit_signal("splash",index,speed)
+	#pass # Replace with function body.
 
 func _integrate_forces(state):
 	# 获取当前变换
-	var current_transform = state.transform
-	# 强制X位置为固定值，保持Y位置不变
-	var result = current_transform.rotated(-current_transform.get_rotation())
-	# 应用修改后的变换
-	state.transform = result
+	#var current_transform = state.transform
+	## 强制X位置为固定值，保持Y位置不变
+	#var result = current_transform.rotated(-current_transform.get_rotation())
+	## 应用修改后的变换
+	#state.transform = result
+	PhysicsServer2D
+	var height_distance = height - target_height
+	var horizon_distance = position.x - target_x_position
+	var loss = -0.03 * linear_velocity.y
+	var horizon_loss = -horizon_dampening * linear_velocity.x
+	#hooke's law:
+	force = Vector2((-horizon_canstant*horizon_distance*5+horizon_loss)*500,(- 0.015 * height_distance + loss)*1000)
+	#assert(position.y<50)
+	apply_force(force)

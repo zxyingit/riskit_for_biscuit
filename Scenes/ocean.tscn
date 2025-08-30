@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cinblgu60jjcd"]
+
+[ext_resource type="Script" uid="uid://dcvkbmv653873" path="res://Scenes/ocean.gd" id="1_q5nav"]
+
+[node name="Ocean" type="Node2D"]
+script = ExtResource("1_q5nav")
+wave_color = Color(0.236214, 0.629292, 0.999994, 1)
+ocean_color = Color(0, 0.513726, 0.890196, 1)

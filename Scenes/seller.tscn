@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dswko7jk1lmy8"]
+
+[ext_resource type="Script" uid="uid://qy7ot4gm112d" path="res://Scenes/seller.gd" id="1_im8up"]
+[ext_resource type="Texture2D" uid="uid://bmw0qoqxj2bnv" path="res://icon.png" id="2_w08ru"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_im8up"]
+size = Vector2(98, 20)
+
+[node name="Seller" type="Node2D"]
+script = ExtResource("1_im8up")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_w08ru")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 26)
+shape = SubResource("RectangleShape2D_im8up")
+disabled = true

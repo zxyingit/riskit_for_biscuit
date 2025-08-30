@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://jqc0uqbxjpwb"]
+
+[ext_resource type="Script" uid="uid://cld77ytqrrh3v" path="res://Scenes/stock_room.gd" id="1_4saur"]
+[ext_resource type="Script" uid="uid://dy8ny157rndf6" path="res://Scenes/stock_factory.gd" id="2_246ek"]
+[ext_resource type="Texture2D" uid="uid://tjlebmnruk2y" path="res://Sprites/barrel.png" id="2_le0qh"]
+[ext_resource type="PackedScene" uid="uid://c0mlp0gswxjjg" path="res://Scenes/cargo.tscn" id="3_4jv3r"]
+
+[node name="Stockroom" type="Node2D"]
+script = ExtResource("1_4saur")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-43, -20, -43, 58, -34, 67, 40, 69, 46, 61, 47, -19)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(0, 1)
+color = Color(0, 0.513726, 0.890196, 0.411765)
+polygon = PackedVector2Array(-36, 61, 40, 61, 40, 59, -36, 59)
+
+[node name="VisibleNodes" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="VisibleNodes"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisibleNodes/StaticBody2D"]
+position = Vector2(4, 25)
+scale = Vector2(0.78086, 0.78086)
+polygon = PackedVector2Array(-60, -58, -60, 44, -52, 55, 46, 56, 54, 47, 55, -58, 46, -58, 46, 39.9683, 40, 46, -45, 46, -51, 38, -51, -58)
+
+[node name="Polygon2D" type="Polygon2D" parent="VisibleNodes/StaticBody2D/CollisionPolygon2D"]
+color = Color(0.751056, 0.409649, 0.208492, 1)
+polygon = PackedVector2Array(-60, -58, -60, 44, -52, 55, 46, 56, 54, 47, 55, -58, 46, -58, 46, 39.9683, 40, 46, -45, 46, -51, 38, -51, -58)
+
+[node name="stock_factory" type="Node2D" parent="VisibleNodes"]
+script = ExtResource("2_246ek")
+
+[node name="Cargo" parent="VisibleNodes" instance=ExtResource("3_4jv3r")]
+position = Vector2(0, 27)
+weight = 80
+
+[node name="Cargo4" parent="VisibleNodes" instance=ExtResource("3_4jv3r")]
+position = Vector2(-5, 13)
+weight = 80
+
+[node name="Cargo5" parent="VisibleNodes" instance=ExtResource("3_4jv3r")]
+position = Vector2(13, 17)
+weight = 80
+
+[node name="Cargo2" parent="VisibleNodes" instance=ExtResource("3_4jv3r")]
+position = Vector2(29, 20)
+
+[node name="Cargo3" parent="VisibleNodes" instance=ExtResource("3_4jv3r")]
+position = Vector2(-10, 23)
+weight = 90
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.243137)
+texture = ExtResource("2_le0qh")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

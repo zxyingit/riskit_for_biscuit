@@ -9,7 +9,7 @@ extends Node2D
 @export var spread = 0.2
 
 #the spring array
-var springs = []
+var springs :Array[WaterSpring]= []
 var passes = 12
 
 #distance in pixel between each spring
@@ -104,11 +104,11 @@ func _physics_process(delta):
 			#adds velocity to the spring to the LEFT of the current spring
 			if i > 0:
 				left_deltas[i] = spread * (springs[i].height - springs[i-1].height)
-				springs[i-1].velocity.y += left_deltas[i]
+				springs[i-1].apply_force(Vector2(0,left_deltas[i]))
 			#adds velocity to the spring to the RIGHT of the current spring
 			if i < springs.size()-1:
 				right_deltas[i] = spread * (springs[i].height - springs[i+1].height)
-				springs[i+1].velocity.y += right_deltas[i]
+				springs[i+1].apply_force(Vector2(0,right_deltas[i])) 
 	new_border()
 	draw_water_body()
 	
@@ -166,7 +166,7 @@ func new_border():
 #this function adds a speed to a spring with this index
 func splash(index, speed):
 	if index >= 0 and index < springs.size():
-		springs[index].velocity.y += speed
+		springs[index].apply_force(Vector2(0,speed))
 	pass
 
 func _on_Water_Body_Area_body_entered(body):

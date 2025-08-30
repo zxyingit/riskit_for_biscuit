@@ -1,15 +1,86 @@
-[gd_scene load_steps=3 format=3 uid="uid://5qek3hn2dwvm"]
+[gd_scene load_steps=11 format=3 uid="uid://dhbnk32xmckmb"]
 
 [ext_resource type="Script" uid="uid://bhw71pyq2mmxw" path="res://Scenes/ship.gd" id="1_4qyt1"]
-[ext_resource type="Texture2D" uid="uid://bmw0qoqxj2bnv" path="res://icon.png" id="1_78pfh"]
+[ext_resource type="Texture2D" uid="uid://5c1heaitir50" path="res://Sprites/barrelship-Sheet.png" id="1_78pfh"]
+[ext_resource type="PackedScene" uid="uid://jqc0uqbxjpwb" path="res://Scenes/stockroom.tscn" id="3_xxxu3"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4qyt1"]
+rough = true
+bounce = 0.4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qyt1"]
+atlas = ExtResource("1_78pfh")
+region = Rect2(0, 0, 128, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxxu3"]
+atlas = ExtResource("1_78pfh")
+region = Rect2(128, 0, 128, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ejuo"]
+atlas = ExtResource("1_78pfh")
+region = Rect2(256, 0, 128, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8aq7e"]
+atlas = ExtResource("1_78pfh")
+region = Rect2(384, 0, 128, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cmder"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qyt1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxxu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ejuo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8aq7e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.5
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xxxu3"]
+size = Vector2(86, 20)
 
 [node name="Ship" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_4qyt1")
+gravity_scale = 0.0
 script = ExtResource("1_4qyt1")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(-75, -39, -75, 35, 79, 34, 79, -37, 71, -37, 71, 23, -65, 25, -65, -40)
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cmder")
+autoplay = "default"
+frame_progress = 0.394474
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(3, -2)
-scale = Vector2(2.1875, 1)
-texture = ExtResource("1_78pfh")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+scale = Vector2(1.97115, 1)
+polygon = PackedVector2Array(-23.844, -19, -23.844, 48, -20.2927, 68, -7.60977, 77, 7.60977, 77, 22.322, 67, 25.3659, 42, 25.3659, -18, 21.8147, -23, -20.8, -24)
+
+[node name="Polygon2D" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+skew = 0.0108639
+color = Color(1, 0.113725, 0.0980392, 1)
+polygon = PackedVector2Array(-23.844, -19, -23.844, 48, -20.2927, 68, -7.60977, 77, 7.60977, 77, 22.322, 67, 25.3659, 42, 25.3659, -18, 21.8147, -23, -20.8, -24)
+
+[node name="Stockroom" parent="." instance=ExtResource("3_xxxu3")]
+visibility_layer = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, -8)
+shape = SubResource("RectangleShape2D_xxxu3")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_ship_sink"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_ship_not_sink"]
